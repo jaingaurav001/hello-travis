@@ -5,4 +5,25 @@ python:
 
 # command to run tests
 script:
-  - python tests/hello.py
+  - python hello_travis\tests\test_primes.py
+
+notifications: 
+  email: false
+
+before_deploy: 
+  - sh build.sh
+deploy: 
+  provider: releases
+  skip_cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  dist: "python"
+  package_glob: "dist/*.{whl,zip,egg,egg-info,tar,bz2,Z,gz}"
+  on: 
+    repo: jaingaurav001/hello-travis 
+    tags: true
+notifications:
+  email:
+    recipients:
+    - jaingaurav001@gmail.com
+    on_success: change
+    on_failure: always
